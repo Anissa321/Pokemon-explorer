@@ -1,0 +1,862 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --text: #1d1d1f;
+  --muted: #5f6570;
+  --yellow: #ffcb05;
+  --blue: #2a75bb;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Nunito', Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255, 203, 5, 0.22), transparent 18%),
+    radial-gradient(circle at top right, rgba(42, 117, 187, 0.18), transparent 20%),
+    linear-gradient(180deg, #fff8de 0%, #ffeef5 35%, #eef6ff 100%);
+}
+
+#app {
+  width: min(1320px, 94%);
+  margin: 0 auto;
+  padding: 32px 0 56px;
+}
+
+.loading-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading-screen h2 {
+  margin: 18px 0 8px;
+  font-family: 'Luckiest Guy', cursive;
+  color: var(--blue);
+  font-size: 2rem;
+}
+
+.loading-screen p {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.loading-pokeball {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border: 4px solid #111;
+  border-radius: 50%;
+  overflow: hidden;
+  background: white;
+  animation: spinBall 1.3s linear infinite;
+  box-shadow: var(--shadow);
+}
+
+.loading-top {
+  height: 50%;
+  background: #ef4444;
+}
+
+.loading-bottom {
+  height: 50%;
+  background: white;
+}
+
+.loading-middle {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 6px;
+  transform: translateY(-50%);
+  background: #111;
+}
+
+.loading-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34px;
+  height: 34px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: white;
+  border: 4px solid #111;
+  z-index: 2;
+}
+
+@keyframes spinBall {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 20px 16px 10px;
+}
+
+.pokeball-logo {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 18px;
+  border: 4px solid #111;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: white;
+  transition: transform 0.25s ease;
+}
+
+.pokeball-logo:hover {
+  transform: rotate(18deg) scale(1.06);
+}
+
+.pokeball-top {
+  height: 50%;
+  background: #ef4444;
+}
+
+.pokeball-bottom {
+  height: 50%;
+  background: white;
+}
+
+.pokeball-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34px;
+  height: 34px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: white;
+  border: 4px solid #111;
+  z-index: 2;
+}
+
+.pokeball-logo::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 6px;
+  transform: translateY(-50%);
+  background: #111;
+}
+
+.hero h1 {
+  margin: 18px 0 8px;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: clamp(2.5rem, 6vw, 4.6rem);
+  letter-spacing: 1px;
+  color: var(--yellow);
+  -webkit-text-stroke: 3px var(--blue);
+  text-shadow: 0 6px 0 rgba(0, 0, 0, 0.08);
+}
+
+.hero p {
+  margin: 0 auto;
+  max-width: 680px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 0.8fr 0.8fr;
+  gap: 14px;
+  margin-bottom: 18px;
+  align-items: stretch;
+}
+
+.search-form {
+  display: block;
+}
+
+.pokeball-field {
+  border: 3px solid #111;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: linear-gradient(
+    to bottom,
+    #ef4444 0%,
+    #ef4444 42%,
+    #111 42%,
+    #111 52%,
+    #ffffff 52%,
+    #ffffff 100%
+  );
+  min-height: 72px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.pokeball-field input,
+.pokeball-field select {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 18px 10px;
+  height: 48%;
+  font-size: 1rem;
+  font-family: 'Nunito', sans-serif;
+  color: #111;
+  font-weight: 800;
+}
+
+.pokeball-field select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.pokeball-field input::placeholder {
+  color: #6a7180;
+  font-weight: 700;
+}
+
+.pokeball-button {
+  border: 3px solid #111;
+  border-radius: 22px;
+  padding: 0;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+  color: #111;
+  background: linear-gradient(
+    to bottom,
+    #ef4444 0%,
+    #ef4444 42%,
+    #111 42%,
+    #111 52%,
+    #ffffff 52%,
+    #ffffff 100%
+  );
+  box-shadow: var(--shadow);
+  min-height: 72px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.pokeball-button:hover,
+.view-btn:hover,
+.type-filter-btn:hover {
+  transform: translateY(-2px);
+}
+
+.pokeball-button span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 10px;
+  font-weight: 900;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.form-message {
+  min-height: 24px;
+  margin: 2px 0 10px;
+  font-weight: 800;
+  color: #2a75bb;
+}
+
+.error-text {
+  color: #d62828;
+}
+
+.type-filter-section {
+  margin-bottom: 22px;
+}
+
+.type-filter-title {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.5rem;
+  margin: 0 0 12px;
+  color: #2a75bb;
+  letter-spacing: 0.5px;
+}
+
+.type-filter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.type-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 3px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  text-transform: capitalize;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.active-type {
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(42, 117, 187, 0.25), 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.type-pill-all {
+  background: linear-gradient(90deg, #ffe27a, #ffd0e8, #c9e7ff);
+}
+
+.view-toggle {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.view-btn {
+  border: 3px solid #111;
+  background: white;
+  color: #111;
+  border-radius: 14px;
+  padding: 10px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.active-view {
+  background: linear-gradient(180deg, var(--yellow) 0%, #f7b801 100%);
+  color: var(--blue);
+}
+
+.result-text {
+  margin: 8px 4px 18px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+#contentArea {
+  min-height: 220px;
+}
+
+.pokemon-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: all 0.45s ease;
+}
+
+.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 3px solid rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow);
+  padding: 18px;
+  min-height: 360px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 22px 42px rgba(0, 0, 0, 0.16);
+}
+
+.card-glow {
+  position: absolute;
+  top: -40px;
+  right: -30px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.shiny-card {
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.7),
+    0 0 24px rgba(255, 221, 87, 0.8),
+    0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+.shiny-badge {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 4;
+  background: linear-gradient(90deg, #fff0a8, #ffe066);
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+.modal-shiny {
+  position: static;
+  display: inline-flex;
+  margin-bottom: 10px;
+}
+
+.type-normal { background: linear-gradient(180deg, #efe7d8 0%, #ddd0bb 100%); }
+.type-fire { background: linear-gradient(180deg, #ffcb9a 0%, #ff8c42 100%); }
+.type-water { background: linear-gradient(180deg, #b9e4ff 0%, #5eb7ff 100%); }
+.type-grass { background: linear-gradient(180deg, #c7f0b2 0%, #7ecf68 100%); }
+.type-electric { background: linear-gradient(180deg, #fff2a6 0%, #ffd43b 100%); }
+.type-ice { background: linear-gradient(180deg, #e7fbff 0%, #b7ecf5 100%); }
+.type-fighting { background: linear-gradient(180deg, #f1b2a8 0%, #db6b5c 100%); }
+.type-poison { background: linear-gradient(180deg, #e1b9ff 0%, #b56cff 100%); }
+.type-ground { background: linear-gradient(180deg, #eed0a2 0%, #c99b62 100%); }
+.type-flying { background: linear-gradient(180deg, #dfe9ff 0%, #aabfff 100%); }
+.type-psychic { background: linear-gradient(180deg, #ffc0d8 0%, #ff6fa3 100%); }
+.type-bug { background: linear-gradient(180deg, #d8ec9f 0%, #9fcf4f 100%); }
+.type-rock { background: linear-gradient(180deg, #e5d4b0 0%, #b89a6a 100%); }
+.type-ghost { background: linear-gradient(180deg, #d4c9ff 0%, #8d7bdb 100%); }
+.type-dragon { background: linear-gradient(180deg, #c7d2ff 0%, #6f7cff 100%); }
+.type-dark { background: linear-gradient(180deg, #9a8f8f 0%, #5a4d4d 100%); color: white; }
+.type-steel { background: linear-gradient(180deg, #ecf1f8 0%, #a6b4c8 100%); }
+.type-fairy { background: linear-gradient(180deg, #ffd8f0 0%, #ff9dd2 100%); }
+
+.type-pill-normal { background: #efe7d8; }
+.type-pill-fire { background: #ffb067; }
+.type-pill-water { background: #81cfff; }
+.type-pill-grass { background: #9ae07d; }
+.type-pill-electric { background: #ffe45c; }
+.type-pill-ice { background: #c7f5ff; }
+.type-pill-fighting { background: #ec8a78; }
+.type-pill-poison { background: #d28aff; }
+.type-pill-ground { background: #deb27b; }
+.type-pill-flying { background: #c6d4ff; }
+.type-pill-psychic { background: #ff97c3; }
+.type-pill-bug { background: #b9dd67; }
+.type-pill-rock { background: #d4bb8d; }
+.type-pill-ghost { background: #ad9cf0; }
+.type-pill-dragon { background: #8ea2ff; }
+.type-pill-dark { background: #6c5b5b; color: white; }
+.type-pill-steel { background: #cad5e7; }
+.type-pill-fairy { background: #ffb7df; }
+
+.image-wrap {
+  height: 170px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 10px;
+}
+
+.image-wrap img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 12px rgba(0, 0, 0, 0.18));
+  transition: transform 0.22s ease;
+}
+
+.card:hover .image-wrap img {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+.card-content {
+  text-align: center;
+}
+
+.pokemon-number {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.52);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.card h2 {
+  margin: 0 0 8px;
+  font-family: 'Luckiest Guy', cursive;
+  letter-spacing: 0.5px;
+  font-size: 1.8rem;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+}
+
+.type-line {
+  margin: 0 0 12px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.68);
+  text-transform: capitalize;
+}
+
+.type-tags,
+.type-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.type-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.mini-type-pill,
+.type-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border-radius: 999px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.92rem;
+  font-weight: 900;
+  text-transform: capitalize;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.details-button,
+.favorite-button,
+.close-modal,
+.table-favorite-btn {
+  cursor: pointer;
+}
+
+.details-button {
+  width: 100%;
+  border: 3px solid #111;
+  border-radius: 16px;
+  padding: 13px 16px;
+  background: linear-gradient(180deg, var(--yellow) 0%, #f7b801 100%);
+  color: var(--blue);
+  font-weight: 900;
+  font-size: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.favorite-button {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 46px;
+  height: 46px;
+  border: 3px solid #111;
+  border-radius: 50%;
+  background: white;
+  font-size: 1.25rem;
+  z-index: 3;
+}
+
+.table-wrapper {
+  background: rgba(255, 255, 255, 0.74);
+  border: 3px solid #111;
+  border-radius: 24px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+.pokemon-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.pokemon-table thead th {
+  background: linear-gradient(180deg, #ffcb05 0%, #f7b801 100%);
+  color: #1f2b46;
+  font-family: 'Luckiest Guy', cursive;
+  letter-spacing: 0.5px;
+  font-size: 1.15rem;
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 3px solid #111;
+}
+
+.pokemon-table tbody td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+}
+
+.pokemon-row {
+  background: rgba(255, 255, 255, 0.7);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.pokemon-row:hover {
+  background: rgba(255, 240, 180, 0.45);
+}
+
+.table-favorite-btn {
+  border: 2px solid #111;
+  border-radius: 12px;
+  background: white;
+  padding: 8px 12px;
+  font-size: 1.1rem;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.56);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 50;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-card {
+  width: min(900px, 92vw);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: white;
+  border: 4px solid #111;
+  border-radius: 28px;
+  padding: 22px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+  position: relative;
+}
+
+.close-modal {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 3px solid #111;
+  border-radius: 50%;
+  background: white;
+  font-weight: 900;
+  z-index: 10;
+}
+
+.modal-layout {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.pokemon-card-large,
+.modal-info-panel {
+  border-radius: 24px;
+  border: 3px solid rgba(0, 0, 0, 0.18);
+  padding: 18px;
+}
+
+.pokemon-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-weight: 900;
+}
+
+.card-rarity,
+.card-hp {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+}
+
+.modal-image-box {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 20px;
+  margin-bottom: 16px;
+  padding: 12px;
+}
+
+.modal-image {
+  width: min(220px, 100%);
+  object-fit: contain;
+  filter: drop-shadow(0 18px 14px rgba(0, 0, 0, 0.18));
+  transition: transform 0.2s ease;
+}
+
+.modal-image:hover {
+  transform: scale(1.04);
+}
+
+.pokemon-card-body h2,
+.section-title {
+  font-family: 'Luckiest Guy', cursive;
+  letter-spacing: 0.5px;
+}
+
+.section-title {
+  margin: 0 0 10px;
+  font-size: 1.6rem;
+  color: #1f2b46;
+}
+
+.abilities-wrap {
+  margin-bottom: 18px;
+}
+
+.abilities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ability-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  font-weight: 800;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.info-box {
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #556074;
+  font-weight: 900;
+}
+
+.stats-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.72);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.stat-name {
+  font-weight: 900;
+  color: #2f3c54;
+}
+
+.stat-value {
+  font-weight: 900;
+  color: #111;
+}
+
+.stat-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.stat-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffcb05, #2a75bb);
+}
+
+.empty-state,
+.error-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  background: white;
+  border: 3px solid #111;
+  border-radius: 24px;
+  padding: 32px 20px;
+  box-shadow: var(--shadow);
+  font-weight: 800;
+}
+
+@media (max-width: 1000px) {
+  .toolbar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  #app {
+    width: 94%;
+  }
+
+  .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-card {
+    width: 94vw;
+    max-height: 86vh;
+    padding: 16px;
+  }
+
+  .modal-layout,
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    -webkit-text-stroke: 2px var(--blue);
+  }
+}
