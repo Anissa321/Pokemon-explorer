@@ -31,6 +31,7 @@ async function fetchPokemonList() {
     );
 
     allPokemon = pokemonDetails;
+    renderPokemon();
 
     console.log(allPokemon); // check in console
   } catch (error) {
@@ -40,5 +41,17 @@ async function fetchPokemonList() {
 }
 
 fetchPokemonList();
+function renderPokemon() {
+  app.innerHTML = `
+    <div class="pokemon-container">
+      ${allPokemon.map(pokemon => `
+        <div class="card">
+          <h2>${pokemon.name}</h2>
+          <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
 
 
