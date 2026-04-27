@@ -31,18 +31,33 @@ async function fetchPokemonList() {
     );
 
     allPokemon = pokemonDetails;
+
+    renderLayout();
     renderPokemon();
 
-    console.log(allPokemon); // check in console
+    console.log(allPokemon);
   } catch (error) {
     app.innerHTML = `<p>Fout bij laden van Pokémon</p>`;
     console.error(error);
   }
 }
 
-fetchPokemonList();
-function renderPokemon() {
+function renderLayout() {
   app.innerHTML = `
+    <div class="page">
+      <header>
+        <h1>Pokemon Explorer</h1>
+      </header>
+
+      <section id="contentArea"></section>
+    </div>
+  `;
+}
+
+function renderPokemon() {
+  const contentArea = document.querySelector('#contentArea');
+
+  contentArea.innerHTML = `
     <div class="pokemon-container">
       ${allPokemon.map(pokemon => `
         <div class="card">
@@ -54,4 +69,4 @@ function renderPokemon() {
   `;
 }
 
-
+fetchPokemonList();
