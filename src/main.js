@@ -6,6 +6,8 @@ const app = document.querySelector('#app');
 const API_URL = 'https://pokeapi.co/api/v2/pokemon?limit=24';
 
 let allPokemon = [];
+let filteredPokemon = [];
+let currentSearch = '';
 
 function renderLoadingScreen() {
   app.innerHTML = `
@@ -31,11 +33,12 @@ async function fetchPokemonList() {
     );
 
     allPokemon = pokemonDetails;
+    filteredPokemon = allPokemon;
 
     renderLayout();
-    renderPokemon();
+    addEventListeners();
+    renderPokemon(filteredPokemon);
 
-    console.log(allPokemon);
   } catch (error) {
     app.innerHTML = `<p>Fout bij laden van Pokémon</p>`;
     console.error(error);
@@ -47,6 +50,8 @@ function renderLayout() {
     <div class="page">
       <header>
         <h1>Pokemon Explorer</h1>
+        <input type="text" id="search" placeholder="Zoek een Pokémon..." />
+        <p id="formMessage"></p>
       </header>
 
       <section id="contentArea"></section>
@@ -54,12 +59,12 @@ function renderLayout() {
   `;
 }
 
-function renderPokemon() {
+function renderPokemon(pokemonList) {
   const contentArea = document.querySelector('#contentArea');
 
   contentArea.innerHTML = `
     <div class="pokemon-container">
-      ${allPokemon.map(pokemon => `
+      ${pokemonList.map(pokemon => `
         <div class="card">
           <h2>${pokemon.name}</h2>
           <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
@@ -67,6 +72,35 @@ function renderPokemon() {
       `).join('')}
     </div>
   `;
+}
+
+function addEventListeners() {
+  const searchInput = document.querySelector('#search');
+
+  searchInput.addEventListener('input', () => {
+    currentSearch = searchInput.value.trim();
+
+    if (currentSearch !== '' && currentSearch.length < 2) {
+      showFormMessage('Typ minstens 2 letters om te zoeken.');
+      return;
+    }
+
+    showFormMessage('');
+    updateFilters();
+  });
+}
+
+function showFormMessage(message) {
+  const formMessage = document.querySelector('#formMessage');
+  formMessage.textContent = message;
+}
+
+function updateFilters() {
+  filteredPokemon = allPokemon.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes(currentSearch.toLowerCase())
+  );
+
+  renderPokemon(filteredPokemon);
 }
 
 fetchPokemonList();
