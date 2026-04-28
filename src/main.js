@@ -10,6 +10,7 @@ let filteredPokemon = [];
 let currentSearch = '';
 let selectedType = 'all';
 let pokemonTypes = ['all'];
+let currentSort = 'id-asc';
 
 function renderLoadingScreen() {
   app.innerHTML = `
@@ -37,7 +38,6 @@ async function fetchPokemonList() {
     allPokemon = pokemonDetails;
     filteredPokemon = allPokemon;
 
-    // TYPES ophalen
     pokemonTypes = [
       'all',
       ...new Set(
@@ -49,7 +49,7 @@ async function fetchPokemonList() {
 
     renderLayout();
     addEventListeners();
-    renderPokemon(filteredPokemon);
+    updateFilters();
 
   } catch (error) {
     app.innerHTML = `<p>Fout bij laden van Pokémon</p>`;
@@ -64,6 +64,15 @@ function renderLayout() {
         <h1>Pokemon Explorer</h1>
         <input type="text" id="search" placeholder="Zoek een Pokémon..." />
         <p id="formMessage"></p>
+
+        <select id="sortBy">
+          <option value="id-asc">ID oplopend</option>
+          <option value="id-desc">ID aflopend</option>
+          <option value="name-asc">Naam A-Z</option>
+          <option value="name-desc">Naam Z-A</option>
+          <option value="weight-asc">Gewicht laag-hoog</option>
+          <option value="weight-desc">Gewicht hoog-laag</option>
+        </select>
       </header>
 
       <div id="typeFilters">
@@ -97,6 +106,7 @@ function renderPokemon(pokemonList) {
 function addEventListeners() {
   const searchInput = document.querySelector('#search');
   const typeButtons = document.querySelectorAll('.type-btn');
+  const sortBy = document.querySelector('#sortBy');
 
   searchInput.addEventListener('input', () => {
     currentSearch = searchInput.value.trim();
@@ -116,6 +126,11 @@ function addEventListeners() {
       updateFilters();
     });
   });
+
+  sortBy.addEventListener('change', () => {
+    currentSort = sortBy.value;
+    updateFilters();
+  });
 }
 
 function showFormMessage(message) {
@@ -134,7 +149,27 @@ function updateFilters() {
     return matchesName && matchesType;
   });
 
+  applySort();
   renderPokemon(filteredPokemon);
+}
+
+function applySort() {
+  filteredPokemon.sort((a, b) => {
+    switch (currentSort) {
+      case 'id-desc':
+        return b.id - a.id;
+      case 'name-asc':
+        return a.name.localeCompare(b.name);
+      case 'name-desc':
+        return b.name.localeCompare(a.name);
+      case 'weight-asc':
+        return a.weight - b.weight;
+      case 'weight-desc':
+        return b.weight - a.weight;
+      default:
+        return a.id - b.id;
+    }
+  });
 }
 
 fetchPokemonList();
