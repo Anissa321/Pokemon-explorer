@@ -8,6 +8,8 @@ const API_URL = 'https://pokeapi.co/api/v2/pokemon?limit=24';
 let allPokemon = [];
 let filteredPokemon = [];
 let currentSearch = '';
+let selectedType = 'all';
+let pokemonTypes = ['all'];
 
 function renderLoadingScreen() {
   app.innerHTML = `
@@ -35,6 +37,16 @@ async function fetchPokemonList() {
     allPokemon = pokemonDetails;
     filteredPokemon = allPokemon;
 
+    // TYPES ophalen
+    pokemonTypes = [
+      'all',
+      ...new Set(
+        allPokemon.flatMap((pokemon) =>
+          pokemon.types.map((item) => item.type.name)
+        )
+      )
+    ];
+
     renderLayout();
     addEventListeners();
     renderPokemon(filteredPokemon);
@@ -53,6 +65,14 @@ function renderLayout() {
         <input type="text" id="search" placeholder="Zoek een Pokémon..." />
         <p id="formMessage"></p>
       </header>
+
+      <div id="typeFilters">
+        ${pokemonTypes.map(type => `
+          <button class="type-btn" data-type="${type}">
+            ${type}
+          </button>
+        `).join('')}
+      </div>
 
       <section id="contentArea"></section>
     </div>
@@ -76,6 +96,7 @@ function renderPokemon(pokemonList) {
 
 function addEventListeners() {
   const searchInput = document.querySelector('#search');
+  const typeButtons = document.querySelectorAll('.type-btn');
 
   searchInput.addEventListener('input', () => {
     currentSearch = searchInput.value.trim();
@@ -88,6 +109,13 @@ function addEventListeners() {
     showFormMessage('');
     updateFilters();
   });
+
+  typeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      selectedType = button.dataset.type;
+      updateFilters();
+    });
+  });
 }
 
 function showFormMessage(message) {
@@ -96,9 +124,15 @@ function showFormMessage(message) {
 }
 
 function updateFilters() {
-  filteredPokemon = allPokemon.filter((pokemon) =>
-    pokemon.name.toLowerCase().includes(currentSearch.toLowerCase())
-  );
+  filteredPokemon = allPokemon.filter((pokemon) => {
+    const matchesName = pokemon.name.toLowerCase().includes(currentSearch.toLowerCase());
+
+    const matchesType =
+      selectedType === 'all' ||
+      pokemon.types.some(item => item.type.name === selectedType);
+
+    return matchesName && matchesType;
+  });
 
   renderPokemon(filteredPokemon);
 }
