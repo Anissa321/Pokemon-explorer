@@ -4,6 +4,7 @@ import './style.css';
 const app = document.querySelector('#app');
 
 const API_URL = 'https://pokeapi.co/api/v2/pokemon?limit=24';
+const FAVORITES_KEY = 'pokemonFavorites';
 
 let allPokemon = [];
 let filteredPokemon = [];
@@ -11,6 +12,7 @@ let currentSearch = '';
 let selectedType = 'all';
 let pokemonTypes = ['all'];
 let currentSort = 'id-asc';
+let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
 
 function renderLoadingScreen() {
   app.innerHTML = `
@@ -93,14 +95,46 @@ function renderPokemon(pokemonList) {
 
   contentArea.innerHTML = `
     <div class="pokemon-container">
-      ${pokemonList.map(pokemon => `
-        <div class="card">
-          <h2>${pokemon.name}</h2>
-          <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
-        </div>
-      `).join('')}
+      ${pokemonList.map(pokemon => {
+        const isFavorite = favorites.includes(pokemon.id);
+
+        return `
+          <div class="card">
+            <button class="favorite-button" data-id="${pokemon.id}" type="button">
+              ${isFavorite ? '❤️' : '🤍'}
+            </button>
+
+            <h2>${pokemon.name}</h2>
+            <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
+          </div>
+        `;
+      }).join('')}
     </div>
   `;
+
+  bindCardButtons();
+}
+
+function bindCardButtons() {
+  const favoriteButtons = document.querySelectorAll('.favorite-button');
+
+  favoriteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const pokemonId = Number(button.dataset.id);
+      toggleFavorite(pokemonId);
+    });
+  });
+}
+
+function toggleFavorite(pokemonId) {
+  if (favorites.includes(pokemonId)) {
+    favorites = favorites.filter(id => id !== pokemonId);
+  } else {
+    favorites.push(pokemonId);
+  }
+
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+  renderPokemon(filteredPokemon);
 }
 
 function addEventListeners() {
