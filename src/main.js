@@ -15,12 +15,7 @@ let currentSort = 'id-asc';
 let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
 
 function renderLoadingScreen() {
-  app.innerHTML = `
-    <div class="loading-screen">
-      <h2>Pokémon worden geladen...</h2>
-      <p>Even geduld, je Pokédex wordt gevuld.</p>
-    </div>
-  `;
+  app.innerHTML = `<div class="loading-screen"><h2>Pokémon worden geladen...</h2><p>Even geduld, je Pokédex wordt gevuld.</p></div>`;
 }
 
 async function fetchPokemonList() {
@@ -42,17 +37,12 @@ async function fetchPokemonList() {
 
     pokemonTypes = [
       'all',
-      ...new Set(
-        allPokemon.flatMap((pokemon) =>
-          pokemon.types.map((item) => item.type.name)
-        )
-      )
+      ...new Set(allPokemon.flatMap((pokemon) => pokemon.types.map((item) => item.type.name)))
     ];
 
     renderLayout();
     addEventListeners();
     updateFilters();
-
   } catch (error) {
     app.innerHTML = `<p>Fout bij laden van Pokémon</p>`;
     console.error(error);
@@ -75,17 +65,23 @@ function renderLayout() {
           <option value="weight-asc">Gewicht laag-hoog</option>
           <option value="weight-desc">Gewicht hoog-laag</option>
         </select>
+
+        <button id="showFavorites" type="button">Favorieten</button>
+        <button id="showAll" type="button">Reset</button>
       </header>
 
       <div id="typeFilters">
-        ${pokemonTypes.map(type => `
-          <button class="type-btn" data-type="${type}">
-            ${type}
-          </button>
-        `).join('')}
+        ${pokemonTypes.map(type => `<button class="type-btn" data-type="${type}">${type}</button>`).join('')}
       </div>
 
       <section id="contentArea"></section>
+    </div>
+
+    <div class="modal hidden" id="pokemonModal">
+      <div class="modal-card">
+        <button id="closeModal" type="button">✕</button>
+        <div id="modalContent"></div>
+      </div>
     </div>
   `;
 }
@@ -93,19 +89,28 @@ function renderLayout() {
 function renderPokemon(pokemonList) {
   const contentArea = document.querySelector('#contentArea');
 
+  if (pokemonList.length === 0) {
+    contentArea.innerHTML = `<p>Geen Pokémon gevonden.</p>`;
+    return;
+  }
+
   contentArea.innerHTML = `
     <div class="pokemon-container">
       ${pokemonList.map(pokemon => {
         const isFavorite = favorites.includes(pokemon.id);
 
         return `
-          <div class="card">
+          <div class="card" data-id="${pokemon.id}">
             <button class="favorite-button" data-id="${pokemon.id}" type="button">
               ${isFavorite ? '❤️' : '🤍'}
             </button>
 
-            <h2>${pokemon.name}</h2>
+            <h2>${capitalize(pokemon.name)}</h2>
             <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
+
+            <button class="details-button" data-id="${pokemon.id}" type="button">
+              Open kaart
+            </button>
           </div>
         `;
       }).join('')}
@@ -117,13 +122,42 @@ function renderPokemon(pokemonList) {
 
 function bindCardButtons() {
   const favoriteButtons = document.querySelectorAll('.favorite-button');
+  const detailButtons = document.querySelectorAll('.details-button');
 
   favoriteButtons.forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
       const pokemonId = Number(button.dataset.id);
       toggleFavorite(pokemonId);
     });
   });
+
+  detailButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const pokemonId = Number(button.dataset.id);
+      openModal(pokemonId);
+    });
+  });
+}
+
+function openModal(pokemonId) {
+  const modal = document.querySelector('#pokemonModal');
+  const modalContent = document.querySelector('#modalContent');
+  const pokemon = allPokemon.find(item => item.id === pokemonId);
+
+  modalContent.innerHTML = `
+    <h2>${capitalize(pokemon.name)}</h2>
+    <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
+    <p><strong>ID:</strong> #${pokemon.id}</p>
+    <p><strong>Type:</strong> ${pokemon.types.map(item => item.type.name).join(', ')}</p>
+    <p><strong>Height:</strong> ${pokemon.height}</p>
+    <p><strong>Weight:</strong> ${pokemon.weight}</p>
+    <p><strong>Base experience:</strong> ${pokemon.base_experience}</p>
+    <p><strong>Abilities:</strong> ${pokemon.abilities.map(item => capitalize(item.ability.name)).join(', ')}</p>
+  `;
+
+  modal.classList.remove('hidden');
 }
 
 function toggleFavorite(pokemonId) {
@@ -141,6 +175,10 @@ function addEventListeners() {
   const searchInput = document.querySelector('#search');
   const typeButtons = document.querySelectorAll('.type-btn');
   const sortBy = document.querySelector('#sortBy');
+  const showFavorites = document.querySelector('#showFavorites');
+  const showAll = document.querySelector('#showAll');
+  const modal = document.querySelector('#pokemonModal');
+  const closeModal = document.querySelector('#closeModal');
 
   searchInput.addEventListener('input', () => {
     currentSearch = searchInput.value.trim();
@@ -165,6 +203,33 @@ function addEventListeners() {
     currentSort = sortBy.value;
     updateFilters();
   });
+
+  showFavorites.addEventListener('click', () => {
+    filteredPokemon = allPokemon.filter(pokemon => favorites.includes(pokemon.id));
+    applySort();
+    renderPokemon(filteredPokemon);
+  });
+
+  showAll.addEventListener('click', () => {
+    currentSearch = '';
+    selectedType = 'all';
+    currentSort = 'id-asc';
+
+    searchInput.value = '';
+    sortBy.value = 'id-asc';
+
+    updateFilters();
+  });
+
+  closeModal.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      modal.classList.add('hidden');
+    }
+  });
 }
 
 function showFormMessage(message) {
@@ -175,7 +240,6 @@ function showFormMessage(message) {
 function updateFilters() {
   filteredPokemon = allPokemon.filter((pokemon) => {
     const matchesName = pokemon.name.toLowerCase().includes(currentSearch.toLowerCase());
-
     const matchesType =
       selectedType === 'all' ||
       pokemon.types.some(item => item.type.name === selectedType);
@@ -204,6 +268,10 @@ function applySort() {
         return a.id - b.id;
     }
   });
+}
+
+function capitalize(text) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 fetchPokemonList();
