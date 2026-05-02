@@ -12,10 +12,11 @@ let currentSearch = '';
 let selectedType = 'all';
 let pokemonTypes = ['all'];
 let currentSort = 'id-asc';
+let currentView = 'cards';
 let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
 
 function renderLoadingScreen() {
-  app.innerHTML = `<div class="loading-screen"><h2>Pokémon worden geladen...</h2><p>Even geduld, je Pokédex wordt gevuld.</p></div>`;
+  app.innerHTML = `<div class="loading-screen"><h2>Pokémon worden geladen...</h2></div>`;
 }
 
 async function fetchPokemonList() {
@@ -37,14 +38,17 @@ async function fetchPokemonList() {
 
     pokemonTypes = [
       'all',
-      ...new Set(allPokemon.flatMap((pokemon) => pokemon.types.map((item) => item.type.name)))
+      ...new Set(allPokemon.flatMap(p =>
+        p.types.map(t => t.type.name)
+      ))
     ];
 
     renderLayout();
     addEventListeners();
     updateFilters();
+
   } catch (error) {
-    app.innerHTML = `<p>Fout bij laden van Pokémon</p>`;
+    app.innerHTML = `<p>Fout bij laden</p>`;
     console.error(error);
   }
 }
@@ -54,24 +58,28 @@ function renderLayout() {
     <div class="page">
       <header>
         <h1>Pokemon Explorer</h1>
-        <input type="text" id="search" placeholder="Zoek een Pokémon..." />
-        <p id="formMessage"></p>
 
+        <input id="search" placeholder="Zoek..." />
         <select id="sortBy">
-          <option value="id-asc">ID oplopend</option>
-          <option value="id-desc">ID aflopend</option>
+          <option value="id-asc">ID ↑</option>
+          <option value="id-desc">ID ↓</option>
           <option value="name-asc">Naam A-Z</option>
           <option value="name-desc">Naam Z-A</option>
-          <option value="weight-asc">Gewicht laag-hoog</option>
-          <option value="weight-desc">Gewicht hoog-laag</option>
         </select>
 
-        <button id="showFavorites" type="button">Favorieten</button>
-        <button id="showAll" type="button">Reset</button>
+        <button id="showFavorites">Favorieten</button>
+        <button id="showAll">Reset</button>
+
+        <button class="view-btn" data-view="cards">Cards</button>
+        <button class="view-btn" data-view="table">Tabel</button>
       </header>
 
       <div id="typeFilters">
-        ${pokemonTypes.map(type => `<button class="type-btn" data-type="${type}">${type}</button>`).join('')}
+        ${pokemonTypes.map(type => `
+          <button class="type-btn" data-type="${type}">
+            ${type}
+          </button>
+        `).join('')}
       </div>
 
       <section id="contentArea"></section>
@@ -79,172 +87,164 @@ function renderLayout() {
 
     <div class="modal hidden" id="pokemonModal">
       <div class="modal-card">
-        <button id="closeModal" type="button">✕</button>
+        <button id="closeModal">✕</button>
         <div id="modalContent"></div>
       </div>
     </div>
   `;
 }
 
-function renderPokemon(pokemonList) {
-  const contentArea = document.querySelector('#contentArea');
+function renderPokemon(list) {
+  const content = document.querySelector('#contentArea');
 
-  if (pokemonList.length === 0) {
-    contentArea.innerHTML = `<p>Geen Pokémon gevonden.</p>`;
-    return;
-  }
-
-  contentArea.innerHTML = `
-    <div class="pokemon-container">
-      ${pokemonList.map(pokemon => {
-        const isFavorite = favorites.includes(pokemon.id);
-
-        return `
-          <div class="card" data-id="${pokemon.id}">
-            <button class="favorite-button" data-id="${pokemon.id}" type="button">
-              ${isFavorite ? '❤️' : '🤍'}
+  if (currentView === 'cards') {
+    content.innerHTML = `
+      <div class="pokemon-container">
+        ${list.map(p => `
+          <div class="card">
+            <button class="favorite-button" data-id="${p.id}">
+              ${favorites.includes(p.id) ? '❤️' : '🤍'}
             </button>
 
-            <h2>${capitalize(pokemon.name)}</h2>
-            <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
+            <h2>${capitalize(p.name)}</h2>
+            <img src="${p.sprites.front_default}" alt="${p.name}" />
 
-            <button class="details-button" data-id="${pokemon.id}" type="button">
+            <button class="details-button" data-id="${p.id}">
               Open kaart
             </button>
           </div>
-        `;
-      }).join('')}
-    </div>
-  `;
-
-  bindCardButtons();
-}
-
-function bindCardButtons() {
-  const favoriteButtons = document.querySelectorAll('.favorite-button');
-  const detailButtons = document.querySelectorAll('.details-button');
-
-  favoriteButtons.forEach(button => {
-    button.addEventListener('click', (event) => {
-      event.stopPropagation();
-      const pokemonId = Number(button.dataset.id);
-      toggleFavorite(pokemonId);
-    });
-  });
-
-  detailButtons.forEach(button => {
-    button.addEventListener('click', (event) => {
-      event.stopPropagation();
-      const pokemonId = Number(button.dataset.id);
-      openModal(pokemonId);
-    });
-  });
-}
-
-function openModal(pokemonId) {
-  const modal = document.querySelector('#pokemonModal');
-  const modalContent = document.querySelector('#modalContent');
-  const pokemon = allPokemon.find(item => item.id === pokemonId);
-
-  modalContent.innerHTML = `
-    <h2>${capitalize(pokemon.name)}</h2>
-    <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" />
-    <p><strong>ID:</strong> #${pokemon.id}</p>
-    <p><strong>Type:</strong> ${pokemon.types.map(item => item.type.name).join(', ')}</p>
-    <p><strong>Height:</strong> ${pokemon.height}</p>
-    <p><strong>Weight:</strong> ${pokemon.weight}</p>
-    <p><strong>Base experience:</strong> ${pokemon.base_experience}</p>
-    <p><strong>Abilities:</strong> ${pokemon.abilities.map(item => capitalize(item.ability.name)).join(', ')}</p>
-  `;
-
-  modal.classList.remove('hidden');
-}
-
-function toggleFavorite(pokemonId) {
-  if (favorites.includes(pokemonId)) {
-    favorites = favorites.filter(id => id !== pokemonId);
+        `).join('')}
+      </div>
+    `;
   } else {
-    favorites.push(pokemonId);
+    content.innerHTML = `
+      <table class="pokemon-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Naam</th>
+            <th>Type</th>
+            <th>Favoriet</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${list.map(p => `
+            <tr>
+              <td>#${p.id}</td>
+              <td>${capitalize(p.name)}</td>
+              <td>${p.types.map(t => t.type.name).join(', ')}</td>
+
+              <td>
+                <button class="table-favorite-button" data-id="${p.id}">
+                  ${favorites.includes(p.id) ? '❤️' : '🤍'}
+                </button>
+              </td>
+
+              <td>
+                <button class="details-button" data-id="${p.id}">
+                  Open
+                </button>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  bindButtons();
+}
+
+function bindButtons() {
+  document.querySelectorAll('.favorite-button, .table-favorite-button').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      toggleFavorite(Number(btn.dataset.id));
+    };
+  });
+
+  document.querySelectorAll('.details-button').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      openModal(Number(btn.dataset.id));
+    };
+  });
+}
+
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+  } else {
+    favorites.push(id);
   }
 
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
   renderPokemon(filteredPokemon);
 }
 
-function addEventListeners() {
-  const searchInput = document.querySelector('#search');
-  const typeButtons = document.querySelectorAll('.type-btn');
-  const sortBy = document.querySelector('#sortBy');
-  const showFavorites = document.querySelector('#showFavorites');
-  const showAll = document.querySelector('#showAll');
+function openModal(id) {
+  const p = allPokemon.find(x => x.id === id);
   const modal = document.querySelector('#pokemonModal');
-  const closeModal = document.querySelector('#closeModal');
+  const content = document.querySelector('#modalContent');
 
-  searchInput.addEventListener('input', () => {
-    currentSearch = searchInput.value.trim();
+  content.innerHTML = `
+    <h2>${capitalize(p.name)}</h2>
+    <img src="${p.sprites.front_default}" alt="${p.name}" />
+    <p>ID: ${p.id}</p>
+    <p>Type: ${p.types.map(t => t.type.name).join(', ')}</p>
+  `;
 
-    if (currentSearch !== '' && currentSearch.length < 2) {
-      showFormMessage('Typ minstens 2 letters om te zoeken.');
-      return;
-    }
-
-    showFormMessage('');
-    updateFilters();
-  });
-
-  typeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      selectedType = button.dataset.type;
-      updateFilters();
-    });
-  });
-
-  sortBy.addEventListener('change', () => {
-    currentSort = sortBy.value;
-    updateFilters();
-  });
-
-  showFavorites.addEventListener('click', () => {
-    filteredPokemon = allPokemon.filter(pokemon => favorites.includes(pokemon.id));
-    applySort();
-    renderPokemon(filteredPokemon);
-  });
-
-  showAll.addEventListener('click', () => {
-    currentSearch = '';
-    selectedType = 'all';
-    currentSort = 'id-asc';
-
-    searchInput.value = '';
-    sortBy.value = 'id-asc';
-
-    updateFilters();
-  });
-
-  closeModal.addEventListener('click', () => {
-    modal.classList.add('hidden');
-  });
-
-  modal.addEventListener('click', (event) => {
-    if (event.target === modal) {
-      modal.classList.add('hidden');
-    }
-  });
+  modal.classList.remove('hidden');
 }
 
-function showFormMessage(message) {
-  const formMessage = document.querySelector('#formMessage');
-  formMessage.textContent = message;
+function addEventListeners() {
+  document.querySelector('#search').oninput = (e) => {
+    currentSearch = e.target.value;
+    updateFilters();
+  };
+
+  document.querySelector('#sortBy').onchange = (e) => {
+    currentSort = e.target.value;
+    updateFilters();
+  };
+
+  document.querySelectorAll('.type-btn').forEach(btn => {
+    btn.onclick = () => {
+      selectedType = btn.dataset.type;
+      updateFilters();
+    };
+  });
+
+  document.querySelector('#showFavorites').onclick = () => {
+    filteredPokemon = allPokemon.filter(p => favorites.includes(p.id));
+    renderPokemon(filteredPokemon);
+  };
+
+  document.querySelector('#showAll').onclick = () => {
+    currentSearch = '';
+    selectedType = 'all';
+    updateFilters();
+  };
+
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.onclick = () => {
+      currentView = btn.dataset.view;
+      renderPokemon(filteredPokemon);
+    };
+  });
+
+  document.querySelector('#closeModal').onclick = () => {
+    document.querySelector('#pokemonModal').classList.add('hidden');
+  };
 }
 
 function updateFilters() {
-  filteredPokemon = allPokemon.filter((pokemon) => {
-    const matchesName = pokemon.name.toLowerCase().includes(currentSearch.toLowerCase());
-    const matchesType =
-      selectedType === 'all' ||
-      pokemon.types.some(item => item.type.name === selectedType);
-
-    return matchesName && matchesType;
+  filteredPokemon = allPokemon.filter(p => {
+    const matchName = p.name.includes(currentSearch.toLowerCase());
+    const matchType = selectedType === 'all' ||
+      p.types.some(t => t.type.name === selectedType);
+    return matchName && matchType;
   });
 
   applySort();
@@ -254,24 +254,16 @@ function updateFilters() {
 function applySort() {
   filteredPokemon.sort((a, b) => {
     switch (currentSort) {
-      case 'id-desc':
-        return b.id - a.id;
-      case 'name-asc':
-        return a.name.localeCompare(b.name);
-      case 'name-desc':
-        return b.name.localeCompare(a.name);
-      case 'weight-asc':
-        return a.weight - b.weight;
-      case 'weight-desc':
-        return b.weight - a.weight;
-      default:
-        return a.id - b.id;
+      case 'id-desc': return b.id - a.id;
+      case 'name-asc': return a.name.localeCompare(b.name);
+      case 'name-desc': return b.name.localeCompare(a.name);
+      default: return a.id - b.id;
     }
   });
 }
 
-function capitalize(text) {
-  return text.charAt(0).toUpperCase() + text.slice(1);
+function capitalize(t) {
+  return t.charAt(0).toUpperCase() + t.slice(1);
 }
 
 fetchPokemonList();
