@@ -19,6 +19,10 @@ function renderLoadingScreen() {
   app.innerHTML = `<div class="loading-screen"><h2>Pokémon worden geladen...</h2></div>`;
 }
 
+function getPokemonImage(pokemon) {
+  return pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
+}
+
 async function fetchPokemonList() {
   try {
     renderLoadingScreen();
@@ -107,7 +111,7 @@ function renderPokemon(list) {
             </button>
 
             <h2>${capitalize(p.name)}</h2>
-            <img src="${p.sprites.front_default}" alt="${p.name}" />
+            <img src="${getPokemonImage(p)}" alt="${p.name}" />
 
             <button class="details-button" data-id="${p.id}">
               Open kaart
@@ -190,7 +194,7 @@ function openModal(id) {
 
   content.innerHTML = `
     <h2>${capitalize(p.name)}</h2>
-    <img src="${p.sprites.front_default}" alt="${p.name}" />
+    <img src="${getPokemonImage(p)}" alt="${p.name}" />
     <p>ID: ${p.id}</p>
     <p>Type: ${p.types.map(t => t.type.name).join(', ')}</p>
   `;
