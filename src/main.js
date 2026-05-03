@@ -101,7 +101,7 @@ function renderPokemon(list) {
     content.innerHTML = `
       <div class="pokemon-container">
         ${list.map(p => `
-          <div class="card">
+          <div class="card type-${p.types[0].type.name}">
             <button class="favorite-button" data-id="${p.id}">
               ${favorites.includes(p.id) ? '❤️' : '🤍'}
             </button>

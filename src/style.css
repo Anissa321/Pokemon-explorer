@@ -176,3 +176,18 @@ button:hover {
 .card {
   position: relative; 
 }
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.type-grass { background: #9ae07d; }
+.type-fire { background: #ffb067; }
+.type-water { background: #81cfff; }
+.type-poison { background: #d28aff; }
+.type-flying { background: #c6d4ff; }
+.type-bug { background: #b9dd67; }
+.type-normal { background: #efe7d8; }
