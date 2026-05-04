@@ -545,6 +545,47 @@ button:hover {
 #showAll:hover {
   transform: translateY(-3px);
 }
+.type-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.type-btn[data-type="grass"] {
+  background: #d9f7c8;
+}
+
+.type-btn[data-type="fire"] {
+  background: #ffd6b3;
+}
+
+.type-btn[data-type="water"] {
+  background: #d6ecff;
+}
+
+.type-btn[data-type="bug"] {
+  background: #e6f7c2;
+}
+
+.type-btn[data-type="poison"] {
+  background: #eed6ff;
+}
+
+.type-btn[data-type="flying"] {
+  background: #e4eaff;
+}
+
+.type-btn[data-type="normal"] {
+  background: #f2f2f2;
+}
+
+.type-btn[data-type="all"] {
+  background: #eaeaea;
+}
+.type-btn {
+  transition: all 0.2s ease;
+}
+
+
 
 @media (max-width: 900px) {
   .pokemon-container {

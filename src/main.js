@@ -25,6 +25,20 @@ function renderLoadingScreen() {
   `;
 }
 
+function getTypeIcon(type) {
+  switch (type) {
+    case 'all': return '🔍';
+    case 'grass': return '🌿';
+    case 'poison': return '☠️';
+    case 'fire': return '🔥';
+    case 'flying': return '🕊️';
+    case 'water': return '💧';
+    case 'bug': return '🐛';
+    case 'normal': return '⚪';
+    default: return '🔘';
+  }
+}
+
 function getPokemonImage(pokemon) {
   const isShiny = shinyPokemonIds.includes(pokemon.id);
 
@@ -102,7 +116,8 @@ function renderLayout() {
       <div id="typeFilters">
         ${pokemonTypes.map(type => `
           <button class="type-btn" data-type="${type}">
-            ${type}
+            <span>${getTypeIcon(type)}</span>
+            <span>${type}</span>
           </button>
         `).join('')}
       </div>
@@ -270,7 +285,7 @@ function openModal(id) {
         <div class="type-tags">
           ${p.types.map(t => `
             <span class="type-pill type-${t.type.name}">
-              ${t.type.name}
+              ${getTypeIcon(t.type.name)} ${t.type.name}
             </span>
           `).join('')}
         </div>
