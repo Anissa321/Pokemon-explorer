@@ -14,6 +14,7 @@ let pokemonTypes = ['all'];
 let currentSort = 'id-asc';
 let currentView = 'cards';
 let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
+let shinyPokemonIds = [];
 
 function renderLoadingScreen() {
   app.innerHTML = `
@@ -25,7 +26,17 @@ function renderLoadingScreen() {
 }
 
 function getPokemonImage(pokemon) {
-  return pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
+  const isShiny = shinyPokemonIds.includes(pokemon.id);
+
+  const official = isShiny
+    ? pokemon.sprites.other['official-artwork'].front_shiny
+    : pokemon.sprites.other['official-artwork'].front_default;
+
+  const fallback = isShiny
+    ? pokemon.sprites.front_shiny
+    : pokemon.sprites.front_default;
+
+  return official || fallback;
 }
 
 async function fetchPokemonList() {
@@ -116,20 +127,32 @@ function renderPokemon(list) {
   if (currentView === 'cards') {
     content.innerHTML = `
       <div class="pokemon-container">
-        ${list.map(p => `
-          <div class="card type-${p.types[0].type.name}">
-            <button class="favorite-button" data-id="${p.id}">
-              ${favorites.includes(p.id) ? '❤️' : '🤍'}
-            </button>
+        ${list.map(p => {
+          const isShiny = shinyPokemonIds.includes(p.id);
 
-            <h2>${capitalize(p.name)}</h2>
-            <img src="${getPokemonImage(p)}" alt="${p.name}" />
+          return `
+            <div class="card type-${p.types[0].type.name}">
+              <button class="favorite-button" data-id="${p.id}">
+                ${favorites.includes(p.id) ? '❤️' : '🤍'}
+              </button>
 
-            <button class="details-button" data-id="${p.id}">
-              Open kaart
-            </button>
-          </div>
-        `).join('')}
+              ${isShiny ? '<div class="shiny-badge">✨ Shiny</div>' : ''}
+
+              <h2>${capitalize(p.name)}</h2>
+
+              <img 
+                src="${getPokemonImage(p)}" 
+                alt="${p.name}" 
+                data-id="${p.id}"
+                class="pokemon-image"
+              />
+
+              <button class="details-button" data-id="${p.id}">
+                Open kaart
+              </button>
+            </div>
+          `;
+        }).join('')}
       </div>
     `;
   } else {
@@ -188,6 +211,13 @@ function bindButtons() {
       openModal(Number(btn.dataset.id));
     };
   });
+
+  document.querySelectorAll('.pokemon-image').forEach(img => {
+    img.ondblclick = () => {
+      toggleShiny(Number(img.dataset.id));
+      renderPokemon(filteredPokemon);
+    };
+  });
 }
 
 function toggleFavorite(id) {
@@ -201,16 +231,38 @@ function toggleFavorite(id) {
   renderPokemon(filteredPokemon);
 }
 
+function toggleShiny(id) {
+  if (shinyPokemonIds.includes(id)) {
+    shinyPokemonIds = shinyPokemonIds.filter(shinyId => shinyId !== id);
+  } else {
+    shinyPokemonIds.push(id);
+  }
+}
+
 function openModal(id) {
   const p = allPokemon.find(pokemon => pokemon.id === id);
   const modal = document.querySelector('#pokemonModal');
   const content = document.querySelector('#modalContent');
+  const isFavorite = favorites.includes(p.id);
+  const isShiny = shinyPokemonIds.includes(p.id);
 
   content.innerHTML = `
+    <button class="modal-favorite" data-id="${p.id}">
+      ${isFavorite ? '❤️' : '🤍'}
+    </button>
+
     <div class="modal-layout">
       <div class="modal-left type-${p.types[0].type.name}">
+        ${isShiny ? '<div class="modal-shiny-badge">✨ Shiny</div>' : ''}
+
         <h2>${capitalize(p.name)}</h2>
-        <img src="${getPokemonImage(p)}" alt="${p.name}" />
+
+        <img 
+          src="${getPokemonImage(p)}" 
+          alt="${p.name}" 
+          class="modal-pokemon-image"
+          data-id="${p.id}"
+        />
 
         <div class="type-tags">
           ${p.types.map(t => `
@@ -247,6 +299,17 @@ function openModal(id) {
   `;
 
   modal.classList.remove('hidden');
+
+  document.querySelector('.modal-favorite').onclick = () => {
+    toggleFavorite(p.id);
+    openModal(p.id);
+  };
+
+  document.querySelector('.modal-pokemon-image').ondblclick = () => {
+    toggleShiny(p.id);
+    openModal(p.id);
+    renderPokemon(filteredPokemon);
+  };
 }
 
 function addEventListeners() {

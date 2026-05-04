@@ -371,3 +371,43 @@ button:hover {
     grid-template-columns: 1fr;
   }
 }
+.modal-favorite {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: 3px solid #111;
+  background: white;
+  font-size: 1.2rem;
+  z-index: 12;
+}
+
+.shiny-badge {
+  position: absolute;
+  top: 72px;
+  right: 16px;
+  background: linear-gradient(90deg, #fff0a8, #ffcb05);
+  border: 2px solid #111;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  z-index: 6;
+}
+
+.modal-shiny-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #fff0a8, #ffcb05);
+  border: 2px solid #111;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.pokemon-image,
+.modal-pokemon-image {
+  cursor: pointer;
+}
