@@ -79,21 +79,24 @@ function renderLayout() {
     <div class="page">
       <header>
         <h1>Pokemon Explorer</h1>
+        <div class="pokeball"></div>
 
-        <input id="search" placeholder="Zoek..." />
+        <div class="controls">
+          <input id="search" placeholder="Zoek..." />
 
-        <select id="sortBy">
-          <option value="id-asc">ID ↑</option>
-          <option value="id-desc">ID ↓</option>
-          <option value="name-asc">Naam A-Z</option>
-          <option value="name-desc">Naam Z-A</option>
-        </select>
+          <select id="sortBy">
+            <option value="id-asc">ID ↑</option>
+            <option value="id-desc">ID ↓</option>
+            <option value="name-asc">Naam A-Z</option>
+            <option value="name-desc">Naam Z-A</option>
+          </select>
 
-        <button id="showFavorites">Favorieten</button>
-        <button id="showAll">Reset</button>
+          <button id="showFavorites"><span>Favorieten</span></button>
+          <button id="showAll"><span>Reset</span></button>
 
-        <button class="view-btn" data-view="cards">Cards</button>
-        <button class="view-btn" data-view="table">Tabel</button>
+          <button class="view-btn" data-view="cards"><span>Cards</span></button>
+          <button class="view-btn" data-view="table"><span>Tabel</span></button>
+        </div>
       </header>
 
       <div id="typeFilters">
@@ -133,7 +136,7 @@ function renderPokemon(list) {
           return `
             <div class="card type-${p.types[0].type.name}">
               <button class="favorite-button" data-id="${p.id}">
-                ${favorites.includes(p.id) ? '❤️' : '🤍'}
+                <span>${favorites.includes(p.id) ? '❤️' : '🤍'}</span>
               </button>
 
               ${isShiny ? '<div class="shiny-badge">✨ Shiny</div>' : ''}
@@ -177,7 +180,7 @@ function renderPokemon(list) {
 
                 <td>
                   <button class="table-favorite-button" data-id="${p.id}">
-                    ${favorites.includes(p.id) ? '❤️' : '🤍'}
+                    <span>${favorites.includes(p.id) ? '❤️' : '🤍'}</span>
                   </button>
                 </td>
 
@@ -248,7 +251,7 @@ function openModal(id) {
 
   content.innerHTML = `
     <button class="modal-favorite" data-id="${p.id}">
-      ${isFavorite ? '❤️' : '🤍'}
+      <span>${isFavorite ? '❤️' : '🤍'}</span>
     </button>
 
     <div class="modal-layout">
