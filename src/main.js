@@ -180,7 +180,7 @@ function renderPokemon(list) {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Naam</th>
+              <th>Pokemon</th>
               <th>Type</th>
               <th>Favoriet</th>
               <th>Details</th>
@@ -188,10 +188,23 @@ function renderPokemon(list) {
           </thead>
           <tbody>
             ${list.map(p => `
-              <tr>
+              <tr class="table-row type-${p.types[0].type.name}">
                 <td>#${p.id}</td>
-                <td>${capitalize(p.name)}</td>
-                <td>${p.types.map(t => t.type.name).join(', ')}</td>
+
+                <td class="table-pokemon">
+                  <img src="${getPokemonImage(p)}" alt="${p.name}" />
+                  <span>${capitalize(p.name)}</span>
+                </td>
+
+                <td>
+                  <div class="table-types">
+                    ${p.types.map(t => `
+                      <span class="table-type-pill type-${t.type.name}">
+                        ${getTypeIcon(t.type.name)} ${t.type.name}
+                      </span>
+                    `).join('')}
+                  </div>
+                </td>
 
                 <td>
                   <button class="table-favorite-button" data-id="${p.id}">

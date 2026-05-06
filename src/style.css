@@ -584,6 +584,91 @@ button:hover {
 .type-btn {
   transition: all 0.2s ease;
 }
+/* TABLE UPGRADE */
+
+.pokemon-table {
+  border-spacing: 0 12px;
+  border-collapse: separate;
+  background: transparent;
+  border: none;
+}
+
+.pokemon-table thead th {
+  background: #ffcb05;
+  border-top: 3px solid #111;
+  border-bottom: 3px solid #111;
+  padding: 16px;
+}
+
+.pokemon-table thead th:first-child {
+  border-left: 3px solid #111;
+  border-radius: 18px 0 0 18px;
+}
+
+.pokemon-table thead th:last-child {
+  border-right: 3px solid #111;
+  border-radius: 0 18px 18px 0;
+}
+
+.table-row {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.table-row:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-table td {
+  padding: 14px 16px;
+  border-top: 3px solid #111;
+  border-bottom: 3px solid #111;
+  font-weight: 900;
+}
+
+.pokemon-table td:first-child {
+  border-left: 3px solid #111;
+  border-radius: 18px 0 0 18px;
+}
+
+.pokemon-table td:last-child {
+  border-right: 3px solid #111;
+  border-radius: 0 18px 18px 0;
+}
+
+.table-pokemon {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-pokemon img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.18));
+}
+
+.table-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.table-type-pill {
+  padding: 8px 12px;
+  border: 2px solid #111;
+  border-radius: 999px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.table-details {
+  width: auto;
+  padding: 10px 18px;
+  border-radius: 14px;
+}
 
 
 
