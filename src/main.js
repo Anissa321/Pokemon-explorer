@@ -13,6 +13,7 @@ let selectedType = 'all';
 let pokemonTypes = ['all'];
 let currentSort = 'id-asc';
 let currentView = 'cards';
+let showOnlyFavorites = false;
 let favorites = JSON.parse(localStorage.getItem(FAVORITES_KEY)) || [];
 let shinyPokemonIds = [];
 
@@ -259,7 +260,7 @@ function toggleFavorite(id) {
   }
 
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-  renderPokemon(filteredPokemon);
+  updateFilters();
 }
 
 function toggleShiny(id) {
@@ -339,7 +340,7 @@ function openModal(id) {
   document.querySelector('.modal-pokemon-image').ondblclick = () => {
     toggleShiny(p.id);
     openModal(p.id);
-    renderPokemon(filteredPokemon);
+    updateFilters();
   };
 }
 
@@ -362,12 +363,12 @@ function addEventListeners() {
   });
 
   document.querySelector('#showFavorites').onclick = () => {
-    filteredPokemon = allPokemon.filter(p => favorites.includes(p.id));
-    applySort();
-    renderPokemon(filteredPokemon);
+    showOnlyFavorites = true;
+    updateFilters();
   };
 
   document.querySelector('#showAll').onclick = () => {
+    showOnlyFavorites = false;
     currentSearch = '';
     selectedType = 'all';
     currentSort = 'id-asc';
@@ -398,12 +399,13 @@ function addEventListeners() {
 
 function updateFilters() {
   filteredPokemon = allPokemon.filter(p => {
+    const matchFavorite = !showOnlyFavorites || favorites.includes(p.id);
     const matchName = p.name.toLowerCase().includes(currentSearch);
     const matchType =
       selectedType === 'all' ||
       p.types.some(t => t.type.name === selectedType);
 
-    return matchName && matchType;
+    return matchFavorite && matchName && matchType;
   });
 
   applySort();
