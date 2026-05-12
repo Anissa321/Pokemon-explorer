@@ -149,8 +149,7 @@ package.json
 # Screenshots
 
 ### Home pagina
-![Home pagina](public/im![Uploading image.png…]()
-ages/image.png)
+![Home pagina](public/images/image.png)
 
 ### Pokemon cards
 ![Pokemon cards](public/images/image%20(1).png)
