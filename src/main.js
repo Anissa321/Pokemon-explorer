@@ -83,6 +83,7 @@ async function fetchPokemonList() {
     renderLayout();
     addEventListeners();
     updateFilters();
+    updateActiveButtons();
   } catch (error) {
     app.innerHTML = `<p>Fout bij laden</p>`;
     console.error(error);
@@ -261,6 +262,7 @@ function toggleFavorite(id) {
 
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
   updateFilters();
+  updateActiveButtons();
 }
 
 function toggleShiny(id) {
@@ -344,6 +346,28 @@ function openModal(id) {
   };
 }
 
+function updateActiveButtons() {
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    const isActive = btn.dataset.view === currentView;
+
+    btn.classList.toggle('active-view', isActive);
+    btn.classList.toggle('inactive-view', !isActive);
+  });
+
+  document.querySelectorAll('.type-btn').forEach(btn => {
+    const isActive = btn.dataset.type === selectedType;
+
+    btn.classList.toggle('active-type', isActive);
+    btn.classList.toggle('inactive-type', selectedType !== 'all' && !isActive);
+  });
+
+  const favoriteButton = document.querySelector('#showFavorites');
+  if (favoriteButton) {
+    favoriteButton.classList.toggle('active-view', showOnlyFavorites);
+    favoriteButton.classList.toggle('inactive-view', !showOnlyFavorites);
+  }
+}
+
 function addEventListeners() {
   document.querySelector('#search').oninput = (event) => {
     currentSearch = event.target.value.trim().toLowerCase();
@@ -359,12 +383,14 @@ function addEventListeners() {
     btn.onclick = () => {
       selectedType = btn.dataset.type;
       updateFilters();
+      updateActiveButtons();
     };
   });
 
   document.querySelector('#showFavorites').onclick = () => {
     showOnlyFavorites = true;
     updateFilters();
+    updateActiveButtons();
   };
 
   document.querySelector('#showAll').onclick = () => {
@@ -377,12 +403,14 @@ function addEventListeners() {
     document.querySelector('#sortBy').value = 'id-asc';
 
     updateFilters();
+    updateActiveButtons();
   };
 
   document.querySelectorAll('.view-btn').forEach(btn => {
     btn.onclick = () => {
       currentView = btn.dataset.view;
       renderPokemon(filteredPokemon);
+      updateActiveButtons();
     };
   });
 
@@ -395,6 +423,8 @@ function addEventListeners() {
       event.target.classList.add('hidden');
     }
   };
+
+  updateActiveButtons();
 }
 
 function updateFilters() {
