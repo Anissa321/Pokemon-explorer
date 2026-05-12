@@ -133,16 +133,20 @@ npm run dev
 
 # Structuur van het project
 
-```bash
 src/
- ├── main.js
- ├── style.css
+├── main.js
+├── style.css
 
 public/
+├── images/
+│   ├── image (1).png
+│   ├── image (2).png
+│   ├── image (3).png
+│   ├── image (4).png
+│   └── image (5).png
 
 index.html
 package.json
-```
 
 ---
 
