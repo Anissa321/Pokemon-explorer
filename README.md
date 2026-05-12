@@ -148,15 +148,21 @@ package.json
 
 # Screenshots
 
+### Home pagina
+![Home pagina](public/im![Uploading image.png…]()
+ages/image.png)
 
-## Cards view
-Voeg hier een screenshot toe van de cards view.
+### Pokemon cards
+![Pokemon cards](public/images/image%20(1).png)
 
-## Tabel view
-Voeg hier een screenshot toe van de tabel view.
+### Shiny pokemon
+![Shiny pokemon](public/images/image%20(2).png)
 
-## Modal
-Voeg hier een screenshot toe van de Pokémon details modal.
+### Pokemon modal
+![Pokemon modal](public/images/image%20(3).png)
+
+### Tabel weergave
+![Tabel weergave](public/images/image%20(4).png)
 
 ---
 
@@ -177,6 +183,6 @@ Alle code werd begrepen en aangepast waar nodig.
 
 # Auteur
 
-Gemaakt door Anissa Canton  
+Gemaakt door Anissa Canton Rodriguez
 Bachelor Toegepaste Informatica  
 Erasmushogeschool Brussel
