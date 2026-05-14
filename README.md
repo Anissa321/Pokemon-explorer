@@ -4,6 +4,10 @@ Een interactieve Pokémon webapp gemaakt met JavaScript en de PokeAPI.
 Met deze applicatie kunnen gebruikers Pokémon bekijken, zoeken, filteren, sorteren en favorieten opslaan.
 
 ---
+## Live demo
+
+Bekijk de website( https://anissa321.github.io/Pokemon-explorer/s)
+
 
 # Over het project
 
