@@ -1,4 +1,3 @@
-<img width="627" height="334" alt="Picture1" src="https://github.com/user-attachments/assets/fcaa0d31-f46a-4f6b-b841-91c9cc096281" />
 # Pokemon Explorer
 
 Een interactieve Pokémon webapp gemaakt met JavaScript en de PokeAPI.  
@@ -166,7 +165,7 @@ package.json
 ![Pokemon modal](public/images/image%20(3).png)
 
 ### Tabel weergave
-![Tabel weergave](public/images/table-new.png)
+<img width="627" height="334" alt="Picture1" src="https://github.com/user-attachments/assets/fcaa0d31-f46a-4f6b-b841-91c9cc096281" />
 
 ---
 
