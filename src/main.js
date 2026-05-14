@@ -450,6 +450,11 @@ function addEventListeners() {
 }
 
 function updateFilters() {
+  if (currentSearch.length === 1) {
+  document.querySelector('#contentArea').innerHTML =
+    `<p class="empty-state">Typ minstens 2 letters om te zoeken.</p>`;
+  return;
+}
   filteredPokemon = allPokemon.filter(p => {
     const matchFavorite = !showOnlyFavorites || favorites.includes(p.id);
     const matchName = p.name.toLowerCase().includes(currentSearch);
