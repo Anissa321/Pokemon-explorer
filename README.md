@@ -108,6 +108,25 @@ In dit project werden volgende technieken gebruikt:
 - ES Modules
 
 ---
+## Implementatie technische vereisten
+
+| Vereiste | Implementatie |
+|---|---|
+| Fetch API | `fetchPokemonList()` in `src/main.js` |
+| Async/Await | `async function fetchPokemonList()` |
+| Promises | `Promise.all()` bij ophalen Pokémon details |
+| DOM manipulatie | `renderLayout()` en `renderPokemon()` |
+| Event listeners | `addEventListeners()` en `bindButtons()` |
+| Template literals | HTML rendering met backticks `` |
+| Array methods | `map()`, `filter()`, `sort()`, `some()`, `flatMap()` |
+| Arrow functions | gebruikt in `.map()` en event listeners |
+| Ternary operator | shiny afbeelding en favoriet hartje |
+| Observer API | `observeItems()` functie |
+| LocalStorage | favorieten opslaan met `localStorage.setItem()` |
+| JSON manipulatie | API response verwerken met `response.json()` |
+| CSS Grid | `.pokemon-container` |
+| Flexbox | `.controls`, `.table-pokemon`, `#typeFilters` |
+| Responsive design | media queries in `style.css` |
 
 # Installatie
 
