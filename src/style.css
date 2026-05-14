@@ -569,7 +569,7 @@ button:hover {
   gap: 10px;
   justify-content: center;
   flex-wrap: wrap;
-}
+}git pull origin main --rebase
 
 .type-pill {
   padding: 10px 16px;
@@ -708,6 +708,20 @@ button:hover {
 .pokemon-image,
 .modal-pokemon-image {
   cursor: pointer;
+}
+/* ============================= */
+/* OBSERVER ANIMATIE */
+/* ============================= */
+
+.reveal-item {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ============================= */

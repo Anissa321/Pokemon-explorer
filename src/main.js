@@ -151,7 +151,7 @@ function renderPokemon(list) {
           const isShiny = shinyPokemonIds.includes(p.id);
 
           return `
-            <div class="card type-${p.types[0].type.name}">
+            <div class="card type-${p.types[0].type.name} reveal-item">
               <button class="favorite-button" data-id="${p.id}">
                 <span>${favorites.includes(p.id) ? '❤️' : '🤍'}</span>
               </button>
@@ -184,13 +184,15 @@ function renderPokemon(list) {
               <th>ID</th>
               <th>Pokemon</th>
               <th>Type</th>
+              <th>Height</th>
+              <th>Weight</th>
               <th>Favoriet</th>
               <th>Details</th>
             </tr>
           </thead>
           <tbody>
             ${list.map(p => `
-              <tr class="table-row type-${p.types[0].type.name}">
+              <tr class="table-row type-${p.types[0].type.name} reveal-item">
                 <td>#${p.id}</td>
 
                 <td class="table-pokemon">
@@ -207,6 +209,9 @@ function renderPokemon(list) {
                     `).join('')}
                   </div>
                 </td>
+
+                <td>${p.height}</td>
+                <td>${p.weight}</td>
 
                 <td>
                   <button class="table-favorite-button" data-id="${p.id}">
@@ -228,6 +233,7 @@ function renderPokemon(list) {
   }
 
   bindButtons();
+  observeItems();
 }
 
 function bindButtons() {
@@ -250,6 +256,21 @@ function bindButtons() {
       toggleShiny(Number(img.dataset.id));
       renderPokemon(filteredPokemon);
     };
+  });
+}
+
+function observeItems() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  });
+
+  document.querySelectorAll('.reveal-item').forEach(item => {
+    observer.observe(item);
   });
 }
 
@@ -362,6 +383,7 @@ function updateActiveButtons() {
   });
 
   const favoriteButton = document.querySelector('#showFavorites');
+
   if (favoriteButton) {
     favoriteButton.classList.toggle('active-view', showOnlyFavorites);
     favoriteButton.classList.toggle('inactive-view', !showOnlyFavorites);
