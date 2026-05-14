@@ -8,6 +8,9 @@ Met deze applicatie kunnen gebruikers Pokémon bekijken, zoeken, filteren, sorte
 
 Bekijk de website(https://anissa321.github.io/Pokemon-explorer/)
 
+## GitHub Repository
+
+https://github.com/Anissa321/Pokemon-explorer
 
 # Over het project
 
