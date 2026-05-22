@@ -117,23 +117,31 @@ In dit project werden volgende technieken gebruikt:
 ---
 ## Implementatie technische vereisten
 
+## Implementatie technische vereisten
+
 | Vereiste | Implementatie |
-|---|---|
-| Fetch API | `fetchPokemonList()` in `src/main.js` |
-| Async/Await | `async function fetchPokemonList()` |
-| Promises | `Promise.all()` bij ophalen Pokémon details |
-| DOM manipulatie | `renderLayout()` en `renderPokemon()` |
-| Event listeners | `addEventListeners()` en `bindButtons()` |
-| Template literals | HTML rendering met backticks `` |
-| Array methods | `map()`, `filter()`, `sort()`, `some()`, `flatMap()` |
-| Arrow functions | gebruikt in `.map()` en event listeners |
-| Ternary operator | shiny afbeelding en favoriet hartje |
-| Observer API | `observeItems()` functie |
-| LocalStorage | favorieten opslaan met `localStorage.setItem()` |
-| JSON manipulatie | API response verwerken met `response.json()` |
-| CSS Grid | `.pokemon-container` |
-| Flexbox | `.controls`, `.table-pokemon`, `#typeFilters` |
-| Responsive design | media queries in `style.css` |
+|-----------|---------------|
+| Fetch API | `fetch(API_URL)` → `main.js` regel 57 |
+| Async/Await | `async function fetchPokemonList()` → `main.js` regel 52 |
+| Promises | `Promise.all()` ophalen Pokémon details → `main.js` regel 60 |
+| DOM manipulatie | `renderLayout()` en `renderPokemon()` → `main.js` regels 84 en 129 |
+| Elementen selecteren | `document.querySelector()` → `main.js` regel 4 |
+| Elementen manipuleren | `innerHTML` aanpassen → `main.js` regel 20 |
+| Events koppelen | `onclick`, `onchange`, `oninput`, `ondblclick` → `main.js` regels 220-380 |
+| Template literals | HTML rendering met backticks `` → `main.js` regel 21 |
+| Array methods | `map()`, `filter()`, `sort()`, `some()`, `flatMap()` → `main.js` regels 62, 113, 391, 409 |
+| Arrow functions | gebruikt in `.map()`, `.forEach()` en events → meerdere plaatsen |
+| Ternary operator | shiny afbeelding + favorieten hartje → `main.js` regels 42-48 en 144 |
+| Callback functions | gebruikt in `.map()`, `.forEach()`, `filter()` → meerdere plaatsen |
+| Observer API | `observeItems()` met `IntersectionObserver` → `main.js` regel 235 |
+| JSON manipulatie | `response.json()` verwerken API data → `main.js` regels 58 en 64 |
+| LocalStorage | `localStorage.setItem()` + `getItem()` → regels 7 en 259 |
+| CSS Grid | `.pokemon-container` → `style.css` regel 223 |
+| Flexbox | `.controls`, `.table-pokemon`, `#typeFilters` → `style.css` regels 81, 145, 327 |
+| Responsive design | media queries → `style.css` regel 727 |
+| ES Modules | `import './style.css'` → `main.js` regel 2 |
+| Vite | project opgezet met Vite |
+| Form validatie | zoekfunctie vereist minimum 2 letters → `main.js` regel 387 |
 
 # Installatie
 
