@@ -117,8 +117,6 @@ In dit project werden volgende technieken gebruikt:
 ---
 ## Implementatie technische vereisten
 
-## Implementatie technische vereisten
-
 | Vereiste | Implementatie |
 |-----------|---------------|
 | Fetch API | `fetch(API_URL)` → `main.js` regel 57 |
@@ -127,21 +125,21 @@ In dit project werden volgende technieken gebruikt:
 | DOM manipulatie | `renderLayout()` en `renderPokemon()` → `main.js` regels 84 en 129 |
 | Elementen selecteren | `document.querySelector()` → `main.js` regel 4 |
 | Elementen manipuleren | `innerHTML` aanpassen → `main.js` regel 20 |
-| Events koppelen | `onclick`, `onchange`, `oninput`, `ondblclick` → `main.js` regels 220-380 |
-| Template literals | HTML rendering met backticks `` → `main.js` regel 21 |
-| Array methods | `map()`, `filter()`, `sort()`, `some()`, `flatMap()` → `main.js` regels 62, 113, 391, 409 |
-| Arrow functions | gebruikt in `.map()`, `.forEach()` en events → meerdere plaatsen |
-| Ternary operator | shiny afbeelding + favorieten hartje → `main.js` regels 42-48 en 144 |
-| Callback functions | gebruikt in `.map()`, `.forEach()`, `filter()` → meerdere plaatsen |
-| Observer API | `observeItems()` met `IntersectionObserver` → `main.js` regel 235 |
+| Events koppelen | `onclick`, `onchange`, `oninput`, `ondblclick` → `main.js` regels 215-388 |
+| Template literals | HTML rendering met backticks `` → `main.js` regels 20-25 |
+| Array methods | `map()`, `filter()`, `sort()`, `some()`, `flatMap()` → `main.js` regels 62, 69, 396, 414 |
+| Arrow functions | gebruikt in `.map()`, `.forEach()` en event listeners → meerdere plaatsen |
+| Ternary operator | shiny afbeelding + favoriet hartje → `main.js` regels 43-49 en 141 |
+| Callback functions | gebruikt in `.map()`, `.forEach()`, `.filter()` → meerdere plaatsen |
+| Observer API | `observeItems()` met `IntersectionObserver` → `main.js` regels 229-239 |
 | JSON manipulatie | `response.json()` verwerken API data → `main.js` regels 58 en 64 |
-| LocalStorage | `localStorage.setItem()` + `getItem()` → regels 7 en 259 |
+| LocalStorage | `localStorage.getItem()` + `localStorage.setItem()` → regels 16 en 248 |
 | CSS Grid | `.pokemon-container` → `style.css` regel 223 |
 | Flexbox | `.controls`, `.table-pokemon`, `#typeFilters` → `style.css` regels 81, 145, 327 |
-| Responsive design | media queries → `style.css` regel 727 |
+| Responsive design | media queries → `style.css` regels 733-745 |
 | ES Modules | `import './style.css'` → `main.js` regel 2 |
 | Vite | project opgezet met Vite |
-| Form validatie | zoekfunctie vereist minimum 2 letters → `main.js` regel 387 |
+| Form validatie | minimum 2 letters zoeken → `main.js` regels 392-395 |
 
 # Installatie
 
@@ -205,16 +203,22 @@ package.json
 
 # AI Gebruik
 
-ChatGPT werd gebruikt voor:
-- hulp bij debugging
-- verbeteren van CSS
-- ideeën voor layout
-- responsive design
-- uitleg van JavaScript
-- optimaliseren van filters
-- verbeteren van de tabel layout
+ChatGPT werd ondersteunend gebruikt tijdens het project.
 
-Alle code werd begrepen en aangepast waar nodig.
+| Gebruik AI | Waar gebruikt |
+|-------------|---------------|
+| Hulp bij debugging | `main.js` regels 242-251 (favorieten), regels 392-406 (filters), GitHub deployment |
+| Verbeteren CSS | `style.css` regels 223-550 (cards, tabel, modal styling) |
+| Ideeën voor layout | `style.css` regels 223-550 (Pokemon cards, modal layout, tabel layout) |
+| Responsive design | `style.css` regels 733-745 |
+| Uitleg JavaScript | `main.js` regels 52-81 (Async/Await, Fetch API, Promise.all) |
+| Optimaliseren filters | `main.js` regels 392-406 (`updateFilters()`) |
+| Verbeteren tabel layout | `main.js` regels 166-205 + `style.css` regels 278-370 |
+| Observer API | `main.js` regels 229-239 + `style.css` regels 718-726 |
+| LocalStorage uitleg | `main.js` regels 16 + 248 |
+| Responsive CSS verbeteringen | `style.css` regels 733-745 |
+
+Alle AI-output werd nagekeken, begrepen en aangepast waar nodig.
 
 ---
 
